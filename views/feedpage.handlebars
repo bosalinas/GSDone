@@ -1,0 +1,46 @@
+<div class="jumbotron big-banner" style="height: 100%">
+  <div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-center row">
+      <div class="col-md-8">
+        <div class="feed p-2">
+          <div class="feed-icon px-2"><i
+              class="fa fa-long-arrow-up text-black-50"
+            ></i></div>
+        </div>
+        <div class="bg-white">
+          <div>
+            <div
+              class="bg-dark rounded-top text-white d-flex flex-row justify-content-between align-items-left p-2 border-bottom"
+            >
+              <div
+                class="d-flex flex-row align-items-center feed-text px-2"
+              ><img
+                  class="rounded-circle"
+                  src="https://i.imgur.com/aoKusnD.jpg"
+                  width="45"
+                />
+                <div class="d-flex flex-column flex-wrap ml-2"><span
+                    id="userNameFeed"
+                    class="font-weight-bold"
+                  >{{user.userUsername}}</span><span
+                    id="timeFeed"
+                    class="text-white-50 time"
+                  >{{timestamp}}</span></div>
+              </div>
+              <div class="feed-icon px-2"><i
+                  class="fa fa-ellipsis-v text-black-50"
+                ></i></div>
+            </div>
+          </div>
+          <div class="p-2 px-3"><span>{{list.list_body}}</span></div>
+          <div
+            class="round-bottom d-flex justify-content-end socials p-2 py-3"
+          ><i class="fa fa-thumbs-up"></i><i class="fa fa-comments-o"></i><i
+              class="fa fa-share"
+            ></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="./js/feedpage.js"></script>
