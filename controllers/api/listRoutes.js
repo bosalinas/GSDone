@@ -105,25 +105,25 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  const listId = req.params.id;
+// router.delete('/:id', async (req, res) => {
+//   const listId = req.params.id;
 
-  try {
-    // Find the list by ID
-    const list = await List.findByPk(listId);
+//   try {
+//     // Find the list by ID
+//     const list = await List.findByPk(listId);
 
-    if (!list) {
-      return res.status(404).json({ error: 'List not found' });
-    }
+//     if (!list) {
+//       return res.status(404).json({ error: 'List not found' });
+//     }
 
-    // Delete the list
-    await list.destroy();
+//     // Delete the list
+//     await list.destroy();
 
-    return res.status(204).end(); // Successfully deleted, no content response
-  } catch (error) {
-    console.error('Error deleting list:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//     return res.status(204).end(); // Successfully deleted, no content response
+//   } catch (error) {
+//     console.error('Error deleting list:', error);
+//     return res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 module.exports = router;
