@@ -13,6 +13,7 @@ formEl.addEventListener("submit", (event) => {
   saveList();
 });
 
+
 const getList = (id) =>
   fetch(`/api/lists/users/${id}`, {
     method: "GET",
@@ -47,24 +48,23 @@ const displayList = (id) =>
 
       data.tasks.forEach((task) => {
         if (task.list_body) {
-          let checkboxId = `check-box${task.id}`;
+          // let checkboxId = `${task.id}`;
           const row = document.createElement("tr");
-          row.innerHTML = ` <th scope="row"><input class="todo__checkbox" type="checkbox" id="${checkboxId}"></th>
-                  <td class="text-break">${task.list_body} <button class="btn-delete" data-task-id="${id}">Delete</button> </td>
+          // CHANGED ${id} ${task.id}
+          row.innerHTML = ` <th scope="row"><input class="todo__checkbox" type="checkbox"></th>
+                  <td class="text-break">${task.list_body} <button class="btn-delete" data-task-id="${task.id}">Delete</button> </td>
                     `;
+
+          // HTML WITH CHECKBOXID. I tried without it and it doesn't seem to change anything and would be duplicate ids for the checkbox and for the task itself.
+            // row.innerHTML = ` <th scope="row"><input class="todo__checkbox" type="checkbox" id="${checkboxId}"></th>
+            //         <td class="text-break">${task.list_body} <button class="btn-delete" data-task-id="${task.id}">Delete</button> </td>
+            //           `;
 
           tableBody.appendChild(row);
         }
       });
-      // event listener to click delete btn
-      const deleteEl = document.querySelector(".btn-delete");
-      deleteEl.addEventListener("submit", (event) => {
-        event.preventDefault();
-        deleteList();
-      });
     });
 
-//
 const saveList = () => {
   const inputListNameText = inputListName.value;
 
@@ -82,22 +82,31 @@ const saveList = () => {
       displayList();
     });
 };
-
+// NEW CODE: having the event listener inside the displayList() function means that it fires over and over again. That was causing the error.
+const tableBody = document.querySelector("#task-table tbody");
+tableBody.addEventListener("click", (event) => {
+  if (event.target.classList.contains("btn-delete")) {
+    const taskId = event.target.dataset.taskId;
+    deleteList(taskId);
+  }
+});
 //delete button
-const deleteList = () => {
-  fetch(`/api/lists/${id}`, {
+// PASS taskId PARAMETER to deleteList function to be able to access it within function and use it in fetch request to delete the list
+const deleteList = (taskId) => {
+  console.log("deleting task with ID:", taskId);
+  fetch(`/api/lists/${taskId}`, {
     method: "DELETE",
   })
     .then((response) => {
       if (response.ok) {
-        console.log('List deleted successfully');
+        console.log('Task deleted successfully');
         displayList(); // Refresh the displayed list after deletion
       } else {
-        console.error('Failed to delete list');
+        console.error('Failed to delete Task:', response.status);
       }
     })
     .catch((error) => {
-      console.error('Error deleting list:', error);
+      console.error('Error in fetch request:', error);
     });
 };
 
