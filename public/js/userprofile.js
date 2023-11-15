@@ -47,12 +47,11 @@ const displayList = (id) =>
       tableBody.innerHTML = "";
 
       //load checkbox states from localStorage
-      const checkboxStates = JSON.parse(localStorage.getItem('checkboxId')) || {};
+      const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
 
       data.tasks.forEach((task) => {
         if (task.list_body) {
           const row = document.createElement("tr");
-          //TODO:isChecked is staying false even though it's being clicked AKA 'on change'
           const checkboxId = `checkbox-${task.id}`
           const isChecked = checkboxStates[checkboxId] || false;
           console.log("checkboxId:", checkboxId);
