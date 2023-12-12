@@ -46,21 +46,42 @@ const displayList = (id) =>
       const tableBody = document.querySelector("#task-table tbody");
       tableBody.innerHTML = "";
 
+      //load checkbox states from localStorage
+      const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
+
       data.tasks.forEach((task) => {
         if (task.list_body) {
-          // let checkboxId = `${task.id}`;
           const row = document.createElement("tr");
-          // CHANGED ${id} ${task.id}
-          row.innerHTML = ` <th scope="row"><input class="todo__checkbox" type="checkbox"></th>
-                  <td class="text-break">${task.list_body} <button class="btn-delete" data-task-id="${task.id}">Delete</button> </td>
-                    `;
-
-          // HTML WITH CHECKBOXID. I tried without it and it doesn't seem to change anything and would be duplicate ids for the checkbox and for the task itself.
-            // row.innerHTML = ` <th scope="row"><input class="todo__checkbox" type="checkbox" id="${checkboxId}"></th>
-            //         <td class="text-break">${task.list_body} <button class="btn-delete" data-task-id="${task.id}">Delete</button> </td>
-            //           `;
+          const checkboxId = `checkbox-${task.id}`
+          const isChecked = checkboxStates[checkboxId] || false;
+          console.log("checkboxId:", checkboxId);
+          console.log("isChecked:", isChecked);
+          row.innerHTML = ` 
+          <th scope="row">
+            <input 
+              class="todo-checkbox" 
+              type="checkbox" 
+              id="${checkboxId}"
+              ${isChecked ? 'checked': ''}
+              >
+          </th>
+          <td class="text-break">${task.list_body} 
+          <button 
+            class="btn-delete" 
+            data-task-id="${task.id}">Delete</button> 
+          </td>
+          `;
 
           tableBody.appendChild(row);
+
+          //add event listener to checkboxes
+          const checkbox = row.querySelector('.todo-checkbox');
+          console.log("checkbox:", checkbox);
+          checkbox.addEventListener('change', () => {
+            //update checkbox state in local storage
+            checkboxStates[checkboxId] = checkbox.checked;
+            localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
+          })
         }
       });
     });
