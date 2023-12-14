@@ -33,3 +33,12 @@ label {
 .card-body {
   background-color: rgba(255, 255, 255, 0.351);
 }
+
+.navbar-brand:hover{
+  cursor: pointer;
+}
+
+#logout:hover,
+#deleteProfile:hover {
+  cursor: pointer;
+}
