@@ -4,15 +4,13 @@ const listDescription = document.getElementById("list-container");
 const createListBtn = document.getElementById("save-list");
 const inputListName = document.getElementById("task-name");
 const submitTaskButton = document.getElementById("btn-post");
-// const deleteTaskButton = document.getElementById("btn-delete");
+const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
 
-//event listener to submit form
 const formEl = document.querySelector(".new-task-form");
 formEl.addEventListener("submit", (event) => {
   event.preventDefault();
   saveList();
 });
-
 
 const getList = (id) =>
   fetch(`/api/lists/users/${id}`, {
@@ -26,14 +24,11 @@ const getList = (id) =>
       const tableBody = document.querySelector("#tbody");
       const newRow = document.createElement("tr");
       const listCell = document.createElement("td");
-
       listCell.textContent = data;
-
       newRow.appendChild(listCell);
       tableBody.appendChild(newRow);
     });
 
-// gets task and displays it in new table row
 const displayList = (id) =>
   fetch(`/api/lists`, {
     method: "GET",
@@ -45,40 +40,23 @@ const displayList = (id) =>
     .then((data) => {
       const tableBody = document.querySelector("#task-table tbody");
       tableBody.innerHTML = "";
-
-      //load checkbox states from localStorage
-      const checkboxStates = JSON.parse(localStorage.getItem('checkboxStates')) || {};
-
       data.tasks.forEach((task) => {
         if (task.list_body) {
           const row = document.createElement("tr");
           const checkboxId = `checkbox-${task.id}`
           const isChecked = checkboxStates[checkboxId] || false;
-          console.log("checkboxId:", checkboxId);
-          console.log("isChecked:", isChecked);
-          row.innerHTML = ` 
-          <th scope="row">
-            <input 
-              class="todo-checkbox" 
-              type="checkbox" 
-              id="${checkboxId}"
-              ${isChecked ? 'checked': ''}
-              >
+          row.innerHTML = ` <th scope="row">
+          <div style="display: flex; justify-content: center; align-items: center; margin-top: .5rem">
+            <input class="todo-checkbox" type="checkbox" id="${checkboxId}" ${isChecked ? 'checked' : ''}>
+          </div>
           </th>
-          <td class="text-break">${task.list_body} 
-          <button 
-            class="btn-delete" 
-            data-task-id="${task.id}">Delete</button> 
+          <td class="text-break">
+          ${task.list_body}<button class="btn-delete" style="float: right;" data-task-id="${task.id}">Delete</button>
           </td>
           `;
-
           tableBody.appendChild(row);
-
-          //add event listener to checkboxes
           const checkbox = row.querySelector('.todo-checkbox');
-          console.log("checkbox:", checkbox);
           checkbox.addEventListener('change', () => {
-            //update checkbox state in local storage
             checkboxStates[checkboxId] = checkbox.checked;
             localStorage.setItem('checkboxStates', JSON.stringify(checkboxStates));
           })
@@ -88,7 +66,6 @@ const displayList = (id) =>
 
 const saveList = () => {
   const inputListNameText = inputListName.value;
-
   fetch("/api/lists", {
     method: "POST",
     headers: {
@@ -103,7 +80,7 @@ const saveList = () => {
       displayList();
     });
 };
-// NEW CODE: having the event listener inside the displayList() function means that it fires over and over again. That was causing the error.
+
 const tableBody = document.querySelector("#task-table tbody");
 tableBody.addEventListener("click", (event) => {
   if (event.target.classList.contains("btn-delete")) {
@@ -111,19 +88,16 @@ tableBody.addEventListener("click", (event) => {
     deleteList(taskId);
   }
 });
-//delete button
-// PASS taskId PARAMETER to deleteList function to be able to access it within function and use it in fetch request to delete the list
+
 const deleteList = (taskId) => {
-  console.log("deleting task with ID:", taskId);
   fetch(`/api/lists/${taskId}`, {
     method: "DELETE",
   })
     .then((response) => {
       if (response.ok) {
-        console.log('Task deleted successfully');
-        displayList(); // Refresh the displayed list after deletion
+        displayList();
       } else {
-        console.error('Failed to delete Task:', response.status);
+        console.error('Failed to delete task', response.status);
       }
     })
     .catch((error) => {
