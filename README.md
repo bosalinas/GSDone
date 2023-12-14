@@ -15,7 +15,7 @@
 
 ## Description
 
-GSDone is a task management application for individuals that want to Get Sht Done.  This app provides a beautiful yet simple user interface.  With GSD,  users can create a user profile and add to-do items.  We know our users are busy, and thanks to our app, they can GSDone!
+GSDone is a task management application for individuals that want to Get Sht Done.  This app provides a beautiful yet simple user interface.  With GSD,  users can create a user profile and manage to-do items. Users can create, check off and delete items from their list.  We know our users are busy, and thanks to our app, they can GSDone!
 
 
 ## Installation
@@ -67,7 +67,7 @@ https://www.npmjs.com/package/cookie-session
 
 If you have any questions about the repo, open an issue or contact us directly at:
 
-[Bo Salinas]()
+[Bo Salinas](bo.salinas12@gmail.com)
 
 [Emily Arizcorreta](rosesandbooks89@gmail.com)
 
